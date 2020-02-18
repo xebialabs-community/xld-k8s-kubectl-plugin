@@ -1,0 +1,10 @@
+xl-deploy:
+  authmethod: http
+  password: admin
+  url: http://localhost:4570
+  username: admin
+xl-release:
+  authmethod: http
+  password: admin
+  url: http://localhost:5516/
+  username: admin

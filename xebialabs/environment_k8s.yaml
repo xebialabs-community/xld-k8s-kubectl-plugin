@@ -1,0 +1,18 @@
+---
+apiVersion: xl-deploy/v1
+kind: Environments
+spec:
+- directory: Environments/k8s
+  children:
+  - name: conf.dev
+    type: udm.Dictionary
+    entries:
+      env: dev
+      alternate.color: blue
+      password: scott
+  - name: k8s-dev
+    type: udm.Environment
+    members:
+    - Infrastructure/k8s/minikube/simpledev
+    dictionaries:
+    - Environments/k8s/conf.dev

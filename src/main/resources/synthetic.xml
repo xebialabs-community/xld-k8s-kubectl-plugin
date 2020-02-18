@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2020 XEBIALABS
+Copyright 2020 XEBIALABS
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 -->
 <synthetic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns="http://www.xebialabs.com/deployit/synthetic"
-           xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
+  xmlns="http://www.xebialabs.com/deployit/synthetic"
+  xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
+
+  <type-modification type="k8s.Master">
+    <property name="kubectlHost" required="false" category="kubectl" kind="ci" referenced-type="overthere.Host"/>
+    <property name="kubeConfigContext" required="false" category="kubectl" description="the context that should be set before running the commands."/>
+    <property name="kubectlPath" required="false" category="kubectl" default="/usr/local/bin"
+      description="Path where kubectl is installed on the machine"/>
+  </type-modification>
+
+  <type type="k8s.simple.AppliedResources" extends="k8s.AbstractResources"
+    deployable-type="k8s.simple.ResourcesFile"
+    container-type="k8s.BasePodContainer" description="K8S Generic Resource Template">
+    <generate-deployable type="k8s.simple.ResourcesFile" extends="k8s.AbstractResourcesFile"/>
+    <property name="resourceFactory" hidden="true" default="k8skubectl.factory.K8SKubeCtlResourceFactory" />
+  </type>
+
+  <type type="k8s.kubectt.AppliedResources" extends="k8s.AbstractResources"
+    deployable-type="k8s.kubectl.ResourcesFile"
+    container-type="k8s.BasePodContainer" description="K8S Generic Resource Template applied using kubectl">
+    <generate-deployable type="k8s.kubectl.ResourcesFile" extends="k8s.AbstractResourcesFile"/>
+    <property name="resourceFactory" hidden="true" default="k8s.kubectl.factory.K8SKubeCtlResourceFactory"/>
+  </type>
+
 
 </synthetic>

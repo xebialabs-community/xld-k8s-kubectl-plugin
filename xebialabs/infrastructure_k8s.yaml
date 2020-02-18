@@ -1,0 +1,17 @@
+---
+apiVersion: xl-deploy/v1
+kind: Infrastructure
+spec:
+- directory: Infrastructure/k8s
+  children:
+  - name: localhost
+    type: overthere.LocalHost
+    os: UNIX
+  - name: minikube
+    type: k8s.Master
+    apiServerURL: http://localhost:99999
+    kubectlHost: Infrastructure/k8s/localhost
+    kubeConfigContext: minikube
+    children:
+    - name: simpledev
+      type: k8s.Namespace

@@ -1,24 +1,25 @@
-# XL Deploy|Release Description|Interface plugin v1.0.0
+# XL Deploy Description plugin v1.0.0
 
-[![Build Status][xld-simple-k8s-simple-plugin-travis-image]][xld-simple-k8s-simple-plugin-travis-url]
-[![License: MIT][xld-simple-k8s-simple-plugin-license-image]][xld-simple-k8s-simple-plugin-license-url]
-![Github All Releases][xld-simple-k8s-simple-plugin-downloads-image]
+[![Build Status][xld-k8s-kubectl-plugin-travis-image]][xld-k8s-kubectl-plugin-travis-url]
+[![License: MIT][xld-k8s-kubectl-plugin-license-image]][xld-k8s-kubectl-plugin-license-url]
+![Github All Releases][xld-k8s-kubectl-plugin-downloads-image]
 
-[xld-simple-k8s-simple-plugin-travis-image]: https://travis-ci.org/xebialabs-community/xld-simple-k8s-simple-plugin.svg?branch=master
-[xld-simple-k8s-simple-plugin-travis-url]: https://travis-ci.org/xebialabs-community/xld-simple-k8s-simple-plugin
-[xld-simple-k8s-simple-plugin-license-image]: https://img.shields.io/badge/License-MIT-yellow.svg
-[xld-simple-k8s-simple-plugin-license-url]: https://opensource.org/licenses/MIT
-[xld-simple-k8s-simple-plugin-downloads-image]: https://img.shields.io/github/downloads/xebialabs-community/xld-simple-k8s-simple-plugin/total.svg
+[xld-k8s-kubectl-plugin-travis-image]: https://travis-ci.org/xebialabs-community/xld-k8s-kubectl-plugin.svg?branch=master
+[xld-k8s-kubectl-plugin-travis-url]: https://travis-ci.org/xebialabs-community/xld-k8s-kubectl-plugin
+[xld-k8s-kubectl-plugin-license-image]: https://img.shields.io/badge/License-MIT-yellow.svg
+[xld-k8s-kubectl-plugin-license-url]: https://opensource.org/licenses/MIT
+[xld-k8s-kubectl-plugin-downloads-image]: https://img.shields.io/github/downloads/xebialabs-community/xld-k8s-kubectl-plugin/total.svg
 
 ## Preface
 
-This document describes the functionality provided by the XL Deploy|Release Description|Interface plugin.
+This document describes the functionality provided by the XL Deploy Description plugin.
 
 See the [XL Deploy reference manual](https://docs.xebialabs.com/xl-deploy) for background information on XL Deploy and deployment automation concepts.  
-or  
-See the [XL Release reference manual](https://docs.xebialabs.com/xl-release) for background information on XL Release and release automation concepts.  
 
 ## Overview
+```
+xl --config ./config.yaml appply -f xebialabs.yaml
+```
 
 ## Requirements
 
@@ -26,8 +27,8 @@ Note:  XLD or XLR version should not be lower than lowest supported version.  Se
 
 ## Installation
 
-* Copy the latest JAR file from the [releases page](https://github.com/xebialabs-community/xld-simple-k8s-simple-plugin/releases) into the `XL_DEPLOY|RELEASE_SERVER/plugins` directory.
-* Restart the XL Deploy|Release server.
+* Copy the latest JAR file from the [releases page](https://github.com/xebialabs-community/xld-k8s-kubectl-plugin/releases) into the `XL_DEPLOY|RELEASE_SERVER/plugins` directory.
+* Restart the XL Deploy server.
 
 ## Features/Usage/Types/Tasks
 

@@ -1,0 +1,8 @@
+apiVersion: xl/v1
+kind: Import
+metadata:
+ imports:
+   - xebialabs/infrastructure_k8s.yaml
+   - xebialabs/environment_k8s.yaml
+   - xebialabs/application_k8s.yaml
+

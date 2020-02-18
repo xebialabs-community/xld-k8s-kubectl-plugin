@@ -1,0 +1,15 @@
+{
+  "apiVersion": "v1",
+  "data": {
+      "secured-config.properties": "API_KEY={{password}}"
+  },
+  "kind": "Opaque",
+  "metadata": {
+    "name": "sensitive-config-d-5485348-f-ef66dbba9f-cm",
+    "labels": {
+      "application": "xl-front-back-app",
+      "version": "1.0.81",
+      "component": "front"
+    }
+  }
+}

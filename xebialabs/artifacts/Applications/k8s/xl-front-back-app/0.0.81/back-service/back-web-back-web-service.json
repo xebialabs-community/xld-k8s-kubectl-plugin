@@ -1,0 +1,28 @@
+
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "back-web-service",
+    "labels": {
+      "application": "xl-front-back-app",
+      "component": "back"
+    }
+  },
+  "spec": {
+    "ports": [
+      {
+        "port": 80,
+        "targetPort": 8000,
+        "protocol": "TCP",
+        "name": "web"
+      }
+    ],
+    "selector": {
+      "application": "xl-front-back-app",
+      "component": "back"
+    },
+    "type":"LoadBalancer"
+    }
+  }
+
