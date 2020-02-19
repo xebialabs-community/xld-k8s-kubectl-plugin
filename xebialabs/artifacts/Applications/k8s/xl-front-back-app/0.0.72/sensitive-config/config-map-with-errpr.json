@@ -1,7 +1,7 @@
 {
   "apiVersion": "v1",
   "data": {
-      "secured-config.properties": "MWYyZDFlMmU2N2Rm"
+      "secured-config.properties": "API=1"
   },
   "kind": "Secret",
   "type":"Opaque",

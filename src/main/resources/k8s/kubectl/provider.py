@@ -4,12 +4,14 @@
 # This software and all trademarks, trade names, and logos included herein are the property of XebiaLabs, Inc. and its affiliates, subsidiaries, and licensors.
 #
 
-from abc import abstractmethod
-from xld.kubernetes import client
-from xld.kubernetes.core_api_client import KubernetesCoreClient
-from openshift.dynamic import DynamicClient
-from xld.kubernetes.resource.provider import DynamicResourceProvider
 import time
+import json
+from overtherepy import OverthereHostSession
+from k8s.kubectl.kubectl import Kubectl
+import traceback
+import sys
+from java.lang import System
+from kubernetes.client.rest import ApiException
 
 
 class KubectlResourceProvider(object):
@@ -19,7 +21,8 @@ class KubectlResourceProvider(object):
         self.container = container
 
     def create(self, namespace, resource_definition):
-        return "kubectl create {0} {1}".format(namespace,resource_definition)
+        print 'kubectl create {0} {1}'.format(namespace,resource_definition['metadata']['name'])
+        Kubectl(namespace, self.container.container).apply(resource_definition)
 
     def modify(self, namespace, resource_definition, patch_type='strategic', update_method='patch'):
         return "kubectl modify {0} {1}".format(namespace,resource_definition)
@@ -48,5 +51,5 @@ class KubectlResourceProvider(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        return self
+        pass
 

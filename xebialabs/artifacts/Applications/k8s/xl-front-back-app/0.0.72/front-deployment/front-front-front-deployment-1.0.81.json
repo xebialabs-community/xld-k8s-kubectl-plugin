@@ -1,0 +1,108 @@
+
+{
+  "kind": "Deployment",
+  "apiVersion": "apps/v1",
+  "metadata": {
+    "name": "front-deployment-0.0.81",
+    "labels": {
+      "application": "xl-front-back-app",
+      "component": "front"
+    },
+    "annotations": {
+      "xldeploy.com/version": "0.0.81",
+      "xldeploy.com/environment": "xl-demo-{{env}}"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "strategy": {
+      "type":"RollingUpdate",
+      "rollingUpdate": {
+        "maxSurge": 1,
+        "maxUnavailable": 0
+      }
+    },
+    "selector": {
+      "matchLabels": {
+        "application": "xl-front-back-app",
+        "component": "front"
+      }
+    },
+    "template": {
+      "metadata": {
+        "name": "front-deployment-0.0.81",
+        "labels": {
+          "application": "xl-front-back-app",
+          "component": "front",
+          "version": "0.0.81"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "sensitive-config-d-5485348-f-ef66dbba9f-cm-v",
+            "secret": {
+              "secretName": "sensitive-config-d-5485348-f-ef66dbba9f-cm"
+            }
+          }
+          ,
+          {
+            "name": "config-d-83487382-f-3d7f4bbbc0-cm-v",
+            "configMap": {
+              "name": "config-d-83487382-f-3d7f4bbbc0-cm",
+              "defaultMode": 420
+            }
+          }
+                  ],
+        "imagePullSecrets": [
+        ],
+        "containers": [
+          {
+            "name": "front",
+            "image": "bmoussaud/xl-demo-frontend:1.0.81",
+            "ports": [
+              {
+                "containerPort": 8000,
+                "protocol": "TCP"
+              }
+                          ],
+             "env": [
+               {
+                    "name": "BACKEND_ENDPOINT",
+                    "value": "http://back-web-service"
+                 }
+               ,
+{
+                    "name": "FEATURE",
+                    "value": "UCCM <b>{{env}}</b>-xl-demo-frontend:0.0.81"
+                 }
+                              
+                                ],
+            "volumeMounts": [
+              {
+                  "name": "sensitive-config-d-5485348-f-ef66dbba9f-cm-v",
+                  "readOnly": true,
+                  "mountPath": "/opt/config/data_secured"
+              }
+              ,
+              {
+                  "name": "config-d-83487382-f-3d7f4bbbc0-cm-v",
+                  "readOnly": true,
+                  "mountPath": "/opt/config/data"
+              }
+                           ],
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "imagePullPolicy": "IfNotPresent"
+          }
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 30
+      }
+    }
+  }
+}
+
+
+
+
