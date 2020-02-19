@@ -25,10 +25,12 @@ class KubectlResourceProvider(object):
         Kubectl(namespace, self.container.container).apply(resource_definition)
 
     def modify(self, namespace, resource_definition, patch_type='strategic', update_method='patch'):
-        return "kubectl modify {0} {1}".format(namespace,resource_definition)
+        print "kubectl modify {0} {1}".format(namespace,resource_definition)
+        Kubectl(namespace, self.container.container).apply(resource_definition)
 
     def delete(self, namespace, resource_definition, propagation_policy='Foreground'):
-        return "kubectl delete {0} {1}".format(namespace,resource_definition)
+        print "kubectl delete {0} {1}".format(namespace,resource_definition)
+        Kubectl(namespace, self.container.container).delete(resource_definition, propagation_policy)
 
     def filter_resources_by_definition(self, namespace, resource_definition):
         return {'xx':'yy'}

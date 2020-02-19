@@ -17,7 +17,7 @@ class Kubectl(object):
         session = OverthereHostSession(self.cluster.kubectlHost)
         data_str = self.data_to_string(data)
         print data_str
-        remote_file = session.upload_text_content_to_work_dir(data_str,'k8s_resource.json')
+        remote_file = session.upload_text_content_to_work_dir(data_str,'k8s_apply_resource.json')
         builder = BashScriptBuilder( )
         builder.add_line("{0} apply -f {1}".format(self.get_kubectl_command(), remote_file.path),check_rc=True)
         shell_file_content = builder.build()
@@ -30,6 +30,25 @@ class Kubectl(object):
         self.dump_response(response)
         if response.rc != 0:
             raise Exception("Failed to apply the resource definition :{0}".format(" ".join(response.stdout)))
+
+    def delete(self, data, propagation_policy):
+        session = OverthereHostSession(self.cluster.kubectlHost)
+        data_str = self.data_to_string(data)
+        print data_str
+        remote_file = session.upload_text_content_to_work_dir(data_str,'k8s_delete_resource.json')
+        builder = BashScriptBuilder( )
+        builder.add_line("{0} delete -f {1}".format(self.get_kubectl_command(), remote_file.path),check_rc=True)
+        shell_file_content = builder.build()
+        print "Executed shell"
+        print shell_file_content
+        xld_apply_sh_file=session.upload_text_content_to_work_dir(shell_file_content,'xld_delete.sh',executable=True)
+        print xld_apply_sh_file
+        print '-'*60
+        response = session.execute(xld_apply_sh_file.path, check_success=False, suppress_streaming_output=True)
+        self.dump_response(response)
+        if response.rc != 0:
+            raise Exception("Failed to delete the resource definition :{0}".format(" ".join(response.stdout)))
+
 
     def dump_response(self, response):
         for r in response.stdout:
