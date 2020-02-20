@@ -11,7 +11,6 @@ from k8s.kubectl.kubectl import Kubectl
 import traceback
 import sys
 from java.lang import System
-from kubernetes.client.rest import ApiException
 
 
 class KubectlResourceProvider(object):
@@ -25,15 +24,19 @@ class KubectlResourceProvider(object):
         Kubectl(namespace, self.container.container).apply(resource_definition)
 
     def modify(self, namespace, resource_definition, patch_type='strategic', update_method='patch'):
-        print "kubectl modify {0} {1}".format(namespace,resource_definition)
+        print 'kubectl modify {0} {1}'.format(namespace,resource_definition['metadata']['name'])
         Kubectl(namespace, self.container.container).apply(resource_definition)
 
     def delete(self, namespace, resource_definition, propagation_policy='Foreground'):
-        print "kubectl delete {0} {1}".format(namespace,resource_definition)
+        print 'kubectl delete {0} {1}'.format(namespace,resource_definition['metadata']['name'])
         Kubectl(namespace, self.container.container).delete(resource_definition, propagation_policy)
 
     def filter_resources_by_definition(self, namespace, resource_definition):
-        return {'xx':'yy'}
+        print "filter_resources_by_definition"
+        metadata_name = resource_definition['metadata']['name']
+        print metadata_name
+        print "truc"
+        return Kubectl(namespace, self.container.container).get(self.kind,metadata_name)
 
     def wait_until_deleted(self, namespace, resource_definition):
         exists = True

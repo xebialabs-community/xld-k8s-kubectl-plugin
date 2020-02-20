@@ -79,3 +79,28 @@ spec:
       - name: secret-config
         type: k8s.kubectl.ResourcesFile
         file: !file "./artifacts/Applications/k8s/xl-front-back-app/0.0.80/sensitive-config/config-map.json"
+    - name: 0.0.83
+      type: udm.DeploymentPackage
+      children:
+      - name: front-ingress
+        type: k8s.kubectl.ResourcesFile
+        file: !file "artifacts/Applications/k8s/xl-front-back-app/0.0.83/front-ingress/front-web-front-web-ingress.json"
+      - name: front-service
+        type: k8s.kubectl.ResourcesFile
+        file: !file "artifacts/Applications/k8s/xl-front-back-app/0.0.83/front-service/front-web-front-web-service.json"
+      - name: back-service
+        type: k8s.kubectl.ResourcesFile
+        file: !file "artifacts/Applications/k8s/xl-front-back-app/0.0.83/back-service/back-web-back-web-service.json"
+      - name: back-deployment
+        type: k8s.kubectl.ResourcesFile
+        file: !file "artifacts/Applications/k8s/xl-front-back-app/0.0.83/back-deployment/back-back-back-deployment-1.0.81.json"
+      - name: config
+        type: k8s.kubectl.ResourcesFile
+        file: !file "artifacts/Applications/k8s/xl-front-back-app/0.0.83/config/config-map.json"
+      - name: front-deployment
+        type: k8s.kubectl.ResourcesFile
+        file: !file "artifacts/Applications/k8s/xl-front-back-app/0.0.83/front-deployment/front-front-front-deployment-1.0.81.json"
+      - name: secret-config
+        type: k8s.kubectl.ResourcesFile
+        file: !file "./artifacts/Applications/k8s/xl-front-back-app/0.0.83/sensitive-config/config-map.json"
+ 

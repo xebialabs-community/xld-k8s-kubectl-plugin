@@ -18,39 +18,50 @@ class Kubectl(object):
         data_str = self.data_to_string(data)
         print data_str
         remote_file = session.upload_text_content_to_work_dir(data_str,'k8s_apply_resource.json')
-        builder = BashScriptBuilder( )
-        builder.add_line("{0} apply -f {1}".format(self.get_kubectl_command(), remote_file.path),check_rc=True)
-        shell_file_content = builder.build()
-        print "Executed shell"
-        print shell_file_content
-        xld_apply_sh_file=session.upload_text_content_to_work_dir(shell_file_content,'xld_apply.sh',executable=True)
-        print xld_apply_sh_file
-        print '-'*60
-        response = session.execute(xld_apply_sh_file.path, check_success=False, suppress_streaming_output=True)
-        self.dump_response(response)
-        if response.rc != 0:
-            raise Exception("Failed to apply the resource definition :{0}".format(" ".join(response.stdout)))
+        command_line = "{0} apply -f {1}".format(self.get_kubectl_command(), remote_file.path)
+        self._execute(session, command_line)
 
     def delete(self, data, propagation_policy):
         session = OverthereHostSession(self.cluster.kubectlHost)
         data_str = self.data_to_string(data)
         print data_str
         remote_file = session.upload_text_content_to_work_dir(data_str,'k8s_delete_resource.json')
+        command_line = "{0} delete -f {1}".format(self.get_kubectl_command(), remote_file.path)
+        self._execute(session, command_line)
+
+    def get(self, kind, metadata_name):
+        session = OverthereHostSession(self.cluster.kubectlHost)
+        command_line = "{0} get {1} --field-selector metadata.name={2} -o json".format(self.get_kubectl_command(), kind, metadata_name)
+        print command_line
+        response = session.execute(command_line, suppress_streaming_output=True, check_success=False)
+        if response.rc == 0:
+            return  json.loads(" ".join(response.stdout))
+        else:
+            raise Exception(" ".join(response.stderr))
+
+    def describe(self, kind, metadata_name):
+        session = OverthereHostSession(self.cluster.kubectlHost)
+        command_line = "{0} describe {1} {2}".format(self.get_kubectl_command(), kind, metadata_name)
+        print command_line
+        response = session.execute(command_line, suppress_streaming_output=True, check_success=False)
+        if response.rc == 0:
+            print "\n".join(response.stdout)
+        else:
+            raise Exception(" ".join(response.stderr))
+
+    def _execute(self, session, command_line):
+        print command_line
         builder = BashScriptBuilder( )
-        builder.add_line("{0} delete -f {1}".format(self.get_kubectl_command(), remote_file.path),check_rc=True)
+        builder.add_line(command_line,check_rc=True)
         shell_file_content = builder.build()
-        print "Executed shell"
-        print shell_file_content
-        xld_apply_sh_file=session.upload_text_content_to_work_dir(shell_file_content,'xld_delete.sh',executable=True)
-        print xld_apply_sh_file
+        xld_apply_sh_file=session.upload_text_content_to_work_dir(shell_file_content,'xld_kubectl.sh',executable=True)
         print '-'*60
         response = session.execute(xld_apply_sh_file.path, check_success=False, suppress_streaming_output=True)
-        self.dump_response(response)
+        self._dump_response(response)
         if response.rc != 0:
-            raise Exception("Failed to delete the resource definition :{0}".format(" ".join(response.stdout)))
+            raise Exception("Failed to apply the resource definition :{0}".format(" ".join(response.stdout)))
 
-
-    def dump_response(self, response):
+    def _dump_response(self, response):
         for r in response.stdout:
            sys.stdout.write("{0}\n".format(r))
         for r in response.stderr:
