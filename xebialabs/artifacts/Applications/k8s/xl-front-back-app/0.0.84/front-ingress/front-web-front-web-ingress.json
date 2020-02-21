@@ -1,0 +1,36 @@
+
+
+{
+  "kind": "Ingress",
+  "apiVersion": "extensions/v1beta1",
+  "metadata": {
+    "name": "front-web-ingress",
+    "labels": {
+      "application": "xl-front-back-app",
+      "version": "1.0.81",
+      "component": "front"
+    },
+    "annotations": {
+      "nginx.ingress.kubernetes.io/ssl-redirect": "false"
+    }
+  },
+  "spec": {
+          "rules": [
+              {
+                  "host": "paas-{{env}}.front-back.xebialabs.demo",
+                  "http": {
+                      "paths": [
+                          {
+                              "backend": {
+                                  "serviceName": "front-web-service",
+                                  "servicePort": 80
+                              },
+                              "path": "/"
+                          }
+                      ]
+                  }
+              }
+          ]
+      }
+}
+

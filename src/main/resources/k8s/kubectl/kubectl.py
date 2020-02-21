@@ -30,24 +30,26 @@ class Kubectl(object):
         self._execute(session, command_line)
 
     def get(self, kind, metadata_name):
-        session = OverthereHostSession(self.cluster.kubectlHost)
-        command_line = "{0} get {1} --field-selector metadata.name={2} -o json".format(self.get_kubectl_command(), kind, metadata_name)
-        print command_line
-        response = session.execute(command_line, suppress_streaming_output=True, check_success=False)
-        if response.rc == 0:
-            return  json.loads(" ".join(response.stdout))
-        else:
-            raise Exception(" ".join(response.stderr))
+        return self.run('get','{0} --field-selector metadata.name={1}'.format(kind, metadata_name),json_output=True)
 
     def describe(self, kind, metadata_name):
+        return self.run('describe','{0} {1}'.format(kind, metadata_name))
+
+    def run(self,verb, parameters,json_output=False):
         session = OverthereHostSession(self.cluster.kubectlHost)
-        command_line = "{0} describe {1} {2}".format(self.get_kubectl_command(), kind, metadata_name)
+        command_line = "{0} {1} {2}".format(self.get_kubectl_command(), verb, parameters)
+        if json_output:
+            command_line = command_line + " -o json"
         print command_line
         response = session.execute(command_line, suppress_streaming_output=True, check_success=False)
         if response.rc == 0:
-            print "\n".join(response.stdout)
+            stdout =  "\n".join(response.stdout)
+            if json_output:
+                return json.loads(stdout)
+            else:
+                return stdout
         else:
-            raise Exception(" ".join(response.stderr))
+            raise Exception("Kubectl Error when running '{0}':{1}".format(command_line,' '.join(response.stderr)))
 
     def _execute(self, session, command_line):
         print command_line
@@ -63,11 +65,11 @@ class Kubectl(object):
 
     def _dump_response(self, response):
         for r in response.stdout:
-           sys.stdout.write("{0}\n".format(r))
+            sys.stdout.write("{0}\n".format(r))
         for r in response.stderr:
-           sys.stderr.write("{0}\n".format(r))
+            sys.stderr.write("{0}\n".format(r))
         if response.rc != 0:
-           sys.stderr.write("Exit Code : {0}\n".format(response.rc))
+            sys.stderr.write("Exit Code : {0}\n".format(response.rc))
 
 
     def data_to_string(self, data):

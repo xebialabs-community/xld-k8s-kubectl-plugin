@@ -1,0 +1,18 @@
+{
+  "apiVersion": "v1",
+  "data": {
+      "config.properties": "ALTERNATE_COLOR={{alternate.color}}"
+  },
+  "kind": "ConfigMap",
+  "metadata": {
+    "name": "config-d-83487382-f-3d7f4bbbc0-cm",
+    "labels": {
+      "application": "xl-front-back-app",
+      "version": "1.0.81",
+      "component": "front"
+    },
+    "annotations": {
+      "nginx.ingress.kubernetes.io/ssl-redirect": "false"
+    }
+  }  
+}
