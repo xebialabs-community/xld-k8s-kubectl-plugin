@@ -29,27 +29,11 @@ class KubectlResourceProvider(object):
 
     def delete(self, namespace, resource_definition, propagation_policy='Foreground'):
         print 'kubectl delete {0} {1}'.format(namespace,resource_definition['metadata']['name'])
-        Kubectl(namespace, self.container.container).delete(resource_definition, propagation_policy)
-
-    def filter_resources_by_definition(self, namespace, resource_definition):
-        print "filter_resources_by_definition"
-        metadata_name = resource_definition['metadata']['name']
-        print metadata_name
-        print "truc"
-        return Kubectl(namespace, self.container.container).get(self.kind,metadata_name)
-
-    def wait_until_deleted(self, namespace, resource_definition):
-        exists = True
-        resource_name = resource_definition["metadata"]["name"]
-        while exists:
-            time.sleep(5)
-            print("Checking for existence of '{}'.".format(resource_name))
-            resources = self.filter_resources_by_definition(namespace=namespace, resource_definition=resource_definition)
-            if 'items' not in dir(resources) or not bool(resources.items):
-                exists = False
-                print("Resource '{}' deleted.".format(resource_name))
-            else:
-                print("Resource '{}' still exists.".format(resource_name))
+        kubectl=Kubectl(namespace, self.container.container)
+        if kubectl.exists(self.kind,resource_definition['metadata']['name']):
+            kubectl.delete(resource_definition, propagation_policy)
+        else:
+            print "the resource doesn't exist"
 
 
     def __enter__(self):

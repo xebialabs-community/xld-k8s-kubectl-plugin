@@ -32,10 +32,14 @@ class Kubectl(object):
     def get(self, kind, metadata_name):
         return self.run('get','{0} --field-selector metadata.name={1}'.format(kind, metadata_name),json_output=True)
 
+    def exists(self, kind, metadata_name):
+        result = self.get(kind,metadata_name)
+        return len(result['items']) > 0
+
     def describe(self, kind, metadata_name):
         return self.run('describe','{0} {1}'.format(kind, metadata_name))
 
-    def run(self,verb, parameters,json_output=False):
+    def run(self,verb, parameters,json_output=False, raise_on_fail=False):
         session = OverthereHostSession(self.cluster.kubectlHost)
         command_line = "{0} {1} {2}".format(self.get_kubectl_command(), verb, parameters)
         if json_output:
@@ -49,7 +53,10 @@ class Kubectl(object):
             else:
                 return stdout
         else:
-            raise Exception("Kubectl Error when running '{0}':{1}".format(command_line,' '.join(response.stderr)))
+            if raise_on_fail:
+                raise Exception("Kubectl Error when running '{0}':{1}".format(command_line,'\n'.join(response.stderr)))
+            else:
+                return '\n'.join(response.stderr)
 
     def _execute(self, session, command_line):
         print command_line

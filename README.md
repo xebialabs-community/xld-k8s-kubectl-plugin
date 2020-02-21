@@ -1,4 +1,4 @@
-# XL Deploy Description plugin v1.0.0
+# XL Deploy K8S KUBECTL plugin v1.0.0
 
 [![Build Status][xld-k8s-kubectl-plugin-travis-image]][xld-k8s-kubectl-plugin-travis-url]
 [![License: MIT][xld-k8s-kubectl-plugin-license-image]][xld-k8s-kubectl-plugin-license-url]
@@ -12,26 +12,38 @@
 
 ## Preface
 
-This document describes the functionality provided by the XL Deploy Description plugin.
+This plugin enhances the official & supported xld-kubernetes-plugin. It
+offers to interact with the k8s using the `kubectl` command line instead
+of the API on the `k8s.Resources` deployed CI. A dedicated types,
+`k8s.kubectl.Resources' exists to).
 
-See the [XL Deploy reference manual](https://docs.xebialabs.com/xl-deploy) for background information on XL Deploy and deployment automation concepts.  
+Sometimes, the direct connection using https is either complicated or
+impossible for security reasons (sometime both). By adding a such
+feature, it's possible to attach a `kubectlHost` to the `k8s.Master` and
+use this host to run the command. This host can be any kind of hosts,
+`overthere.LocalHost` or `overthere.SshHost`.
 
-## Overview
+When manipulating resources, the plugin is lazier. It uses:
+* `kubect apply` for CREATE & MODIFY operation
+* `kubect delete` for DELETE without failing if it doesn't exit.
+
+
+## Sample Code 
 ```
 xl --config ./config.yaml apply -f xebialabs.yaml
 ```
-Add [https://github.com/xebialabs-community/overthere-pylib/releases/tag/v0.0.4](https://github.com/xebialabs-community/overthere-pylib/releases/download/v0.0.4/overtherepy-0.0.4.jar) to your plugin directory 
-
-## Requirements
-
-Note:  XLD or XLR version should not be lower than lowest supported version.  See <https://support.xebialabs.com/hc/en-us/articles/115003299946-Supported-XebiaLabs-product-versions>.
 
 ## Installation
 
-* Copy the latest JAR file from the [releases page](https://github.com/xebialabs-community/xld-k8s-kubectl-plugin/releases) into the `XL_DEPLOY|RELEASE_SERVER/plugins` directory.
+* Copy the latest JAR file from the [releases page](https://github.com/xebialabs-community/xld-k8s-kubectl-plugin/releases) into the `XL_DEPLOY_SERVER/plugins` directory
+* Add [https://github.com/xebialabs-community/overthere-pylib/releases/tag/v0.0.4](https://github.com/xebialabs-community/overthere-pylib/releases/download/v0.0.4/overtherepy-0.0.4.jar) to your plugin directory 
 * Restart the XL Deploy server.
 
-## Features/Usage/Types/Tasks
+## Features
+
+### Infrastructure
+
+[images/Infrastructure.png]
 
 ## References
 
