@@ -81,6 +81,7 @@ spec:
     debug: true
     kubectlHost: Infrastructure/k8s/localhost
     kubeConfigContext: minikube
+    useKubectl: True
     children:
     - name: simpledev
       type: k8s.Namespace

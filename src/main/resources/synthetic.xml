@@ -15,25 +15,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
 
   <type-modification type="k8s.Master">
+    <property name="useKubectl" required="false" category="kubectl" kind="boolean" default="false" description="use kubectl to interact with the cluster"/>
     <property name="kubectlHost" required="false" category="kubectl" kind="ci" referenced-type="overthere.Host"/>
     <property name="kubeConfigContext" required="false" category="kubectl" description="the context that should be set before running the commands."/>
     <property name="kubectlPath" required="false" category="kubectl" default="/usr/local/bin"
       description="Path where kubectl is installed on the machine"/>
   </type-modification>
 
-  <type type="k8s.simple.AppliedResources" extends="k8s.AbstractResources"
-    deployable-type="k8s.simple.ResourcesFile"
-    container-type="k8s.BasePodContainer" description="K8S Generic Resource Template">
-    <generate-deployable type="k8s.simple.ResourcesFile" extends="k8s.AbstractResourcesFile"/>
-    <property name="resourceFactory" hidden="true" default="k8skubectl.factory.K8SKubeCtlResourceFactory" />
-  </type>
 
-  <type type="k8s.kubectt.AppliedResources" extends="k8s.AbstractResources"
+  <type type="k8s.kubectl.AppliedResources" extends="k8s.AbstractResources"
     deployable-type="k8s.kubectl.ResourcesFile"
     container-type="k8s.BasePodContainer" description="K8S Generic Resource Template applied using kubectl">
     <generate-deployable type="k8s.kubectl.ResourcesFile" extends="k8s.AbstractResourcesFile"/>
     <property name="resourceFactory" hidden="true" default="k8s.kubectl.factory.K8SKubeCtlResourceFactory"/>
   </type>
+
 
 
 </synthetic>
