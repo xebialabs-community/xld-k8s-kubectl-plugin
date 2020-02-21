@@ -43,7 +43,7 @@ xl --config ./config.yaml apply -f xebialabs.yaml
 
 ### Infrastructure
 
-[images/Infrastructure.png]
+![Infrastructure](images/infrastructure.png)
 
 ## References
 
