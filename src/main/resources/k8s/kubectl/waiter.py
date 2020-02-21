@@ -59,11 +59,20 @@ class Waiter(object):
         raise Exception("Fail to wait for {0},{1}".format(kind,name))
 
     def dump_events(self,deployment):
+        events= {}
         for pod in self.get_associated_pods(deployment):
+            events[pod]=self.get_pod_events(pod)
+        for pod in events:
             print "Pod {0}".format(pod)
             print "-------------------"
-            for event in self.get_pod_events(pod):
-                print event
+            for event in events[pod]:
+                if 'Normal' in event:
+                    stream = sys.stdout
+                else:
+                    stream = sys.stderr
+                stream.write(event+"\n")
+
+
 
     def get_associated_pods(self,deployment):
         deployment_labels = deployment['spec']['template']['metadata']['labels']
