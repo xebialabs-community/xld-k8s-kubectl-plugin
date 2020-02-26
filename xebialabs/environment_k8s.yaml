@@ -10,6 +10,7 @@ spec:
       env: dev
       alternate.color: blue
       password: scott
+      username: tiger
   - name: k8s-dev
     type: udm.Environment
     members:

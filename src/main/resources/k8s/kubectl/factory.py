@@ -9,7 +9,7 @@
 #
 
 import importlib
-
+import base64
 from k8s.kubectl.provider import KubectlResourceProvider
 
 
@@ -48,8 +48,26 @@ class K8SKubeCtlResourceFactory(object):
         }
 
     def get(self, data):
-        return self._resolve(data)
+        return self._resolve(self._encrypt(data))
 
     def _resolve(self, data):
         return KubectlResourceProvider(self.__deployed.container, data["kind"], data['apiVersion'] if 'apiVersion' in data else 'v1')
+
+    def _encrypt(self,data):
+        kind = data["kind"]
+        if not kind.lower() == "secret":
+            return data
+
+        if not self.__deployed.container.container.kubectlEncryptSecretData:
+            return data
+
+        encoded_data = {}
+        for k,v in data['data'].items():
+            print "Encode value of {0}....".format(k)
+            encoded = base64.b64encode(v)
+            encoded_data[str(k)] = str(encoded)
+
+        data['data']=encoded_data
+        return data
+
 

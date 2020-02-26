@@ -20,6 +20,7 @@
     <property name="kubeConfigContext" required="false" category="kubectl" description="the context that should be set before running the commands."/>
     <property name="kubectlPath" required="false" category="kubectl" default="/usr/local/bin"
       description="Path where kubectl is installed on the machine"/>
+    <property name="kubectlEncryptSecretData" required="false" default="true" category="kubectl"  kind="boolean" description="base64 encrypt secrets if there are not"/>
   </type-modification>
 
 

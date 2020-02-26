@@ -59,7 +59,7 @@
         "containers": [
           {
             "name": "front",
-            "image": "prout/xl-demo-frontend:1.0.84",
+            "image": "bmoussaud/xl-demo-frontend:1.0.83",
             "ports": [
               {
                 "containerPort": 8000,
