@@ -1,0 +1,21 @@
+---
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: Applications/k8s/front-back/0.0.61
+  type: udm.DeploymentPackage
+  deployables:
+  - name: back-service
+    type: k8s.kubectl.ResourcesFile
+    mergePatchType: strategic
+    propagationPolicy: Foreground
+    updateMethod: patch
+    file: !file "artifacts/Applications/k8s/front-back/0.0.60/back-service/back-web-back-web-service.json"
+  - name: back-deployment
+    type: k8s.kubectl.ResourcesFile
+    placeholders:
+    - env
+    mergePatchType: strategic
+    propagationPolicy: Foreground
+    updateMethod: patch
+    file: !file "artifacts/Applications/k8s/front-back/0.0.60/back-deployment/back-back-back-deployment-1.0.81.json"

@@ -24,8 +24,12 @@ use this host to run the command. This host can be any kind of hosts,
 `overthere.LocalHost` or `overthere.SshHost`.
 
 When manipulating resources, the plugin is lazier. It uses:
-* `kubect apply` for CREATE & MODIFY operation
+* `kubect apply` for CREATE & MODIFY operation. (CREATE & REPLACE verbs
+  are available as an option as well if needed)
 * `kubect delete` for DELETE without failing if it doesn't exit.
+* encode sensitive date in kubernetes secrets to use the encrypted entries in the `udm.Dictionary`
+
+
 
 
 ## Sample Code 

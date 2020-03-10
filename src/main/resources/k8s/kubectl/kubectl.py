@@ -23,21 +23,26 @@ class Kubectl(object):
         self.namespace = namespace
         self.cluster = cluster
 
-    def apply(self, data):
+    def _action(self, verb,data):
         session = OverthereHostSession(self.cluster.kubectlHost)
         data_str = self.data_to_string(data)
         print data_str
-        remote_file = session.upload_text_content_to_work_dir(data_str,'k8s_apply_resource.json')
-        command_line = "{0} apply -f {1}".format(self.get_kubectl_command(), remote_file.path)
+        remote_file = session.upload_text_content_to_work_dir(data_str,'k8s_{0}_resource.json'.format(verb))
+        command_line = "{0} {1} -f {2}".format(self.get_kubectl_command(),verb, remote_file.path)
+        print command_line
         self._execute(session, command_line)
 
+    def apply(self, data):
+        return self._action('apply',data)
+
+    def create(self, data):
+        return self._action('create',data)
+
+    def replace(self, data ):
+        return self._action('replace',data)
+
     def delete(self, data, propagation_policy):
-        session = OverthereHostSession(self.cluster.kubectlHost)
-        data_str = self.data_to_string(data)
-        print data_str
-        remote_file = session.upload_text_content_to_work_dir(data_str,'k8s_delete_resource.json')
-        command_line = "{0} delete -f {1}".format(self.get_kubectl_command(), remote_file.path)
-        self._execute(session, command_line)
+        return self._action('delete',data)
 
     def get(self, kind, metadata_name):
         return self.run('get','{0} --field-selector metadata.name={1}'.format(kind, metadata_name),json_output=True)

@@ -23,13 +23,27 @@ class KubectlResourceProvider(object):
         self.api_version = api_version
         self.container = container
 
+    def _is_apply(self):
+        print "--is apply ? {0}".format(self.container.container.deploymentMode)
+        return self.container.container.deploymentMode == 'APPLY'
+
     def create(self, namespace, resource_definition):
-        print 'kubectl create {0} {1}'.format(namespace,resource_definition['metadata']['name'])
-        Kubectl(namespace, self.container.container).apply(resource_definition)
+        kubectl=Kubectl(namespace, self.container.container)
+        if self._is_apply():
+            print 'kubectl apply {0} {1}'.format(namespace,resource_definition['metadata']['name'])
+            kubectl.apply(resource_definition)
+        else:
+            print 'kubectl create {0} {1}'.format(namespace,resource_definition['metadata']['name'])
+            kubectl.create(resource_definition)
 
     def modify(self, namespace, resource_definition, patch_type='strategic', update_method='patch'):
-        print 'kubectl modify {0} {1}'.format(namespace,resource_definition['metadata']['name'])
-        Kubectl(namespace, self.container.container).apply(resource_definition)
+        kubectl=Kubectl(namespace, self.container.container)
+        if self._is_apply():
+            print 'kubectl apply {0} {1}'.format(namespace,resource_definition['metadata']['name'])
+            kubectl.apply(resource_definition)
+        else:
+            print 'kubectl replace {0} {1}'.format(namespace,resource_definition['metadata']['name'])
+            kubectl.replace(resource_definition)
 
     def delete(self, namespace, resource_definition, propagation_policy='Foreground'):
         print 'kubectl delete {0} {1}'.format(namespace,resource_definition['metadata']['name'])
