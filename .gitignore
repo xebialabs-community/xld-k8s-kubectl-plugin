@@ -14,3 +14,4 @@ bin
 xl-deploy-8.5.4-server
 mylib/
 r.sh
+.idea/
