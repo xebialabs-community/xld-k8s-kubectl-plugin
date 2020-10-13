@@ -26,6 +26,7 @@ def apiVersion = "2018.6.5"
 
 dependencies {
   compile group: 'com.xebialabs.overthere', name: 'overtherepy', version: '0.0.4'
+  distBundle group: 'com.xebialabs.overthere', name: 'overtherepy', version: '0.0.4'
 }
 
 
